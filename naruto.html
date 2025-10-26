@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Наруто под сакурой — Деревня Листа</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="background"></div>
+  <div id="petal-container"></div>
+  <img id="naruto" src="Naruto.png" alt="Наруто — Шестой Хокаге">
+
+  <script>
+    const container = document.getElementById('petal-container');
+    const background = document.getElementById('background');
+    const naruto = document.getElementById('naruto');
+    const petalImageSrc = 'frfrf.png'; // ← твоё изображение лепестка
+
+    // === ПАРАЛЛАКС ОТ МЫШИ ===
+    let mouseX = 0.5;
+    let mouseY = 0.5;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX / window.innerWidth;
+      mouseY = e.clientY / window.innerHeight;
+    });
+
+    function updateParallax() {
+      const bgOffsetX = (mouseX - 0.5) * 20;
+      const bgOffsetY = (mouseY - 0.5) * 10;
+      const narutoOffsetX = (mouseX - 0.5) * 8;
+
+      background.style.transform = `translate(${bgOffsetX}px, ${bgOffsetY}px)`;
+      naruto.style.transform = `translateX(calc(-50% + ${narutoOffsetX}px))`;
+
+      requestAnimationFrame(updateParallax);
+    }
+
+    updateParallax();
+
+    // === АНИМАЦИЯ ЛЕПЕСТКОВ ===
+    function createPetal() {
+      const petal = document.createElement('img');
+      petal.className = 'petal';
+      petal.src = petalImageSrc;
+
+      const startX = Math.random() * window.innerWidth;
+      let y = -50;
+      let x = startX;
+
+      const speedY = 0.4 + Math.random() * 0.6;
+      const speedX = -(0.2 + Math.random() * 0.4);
+      const rotationSpeed = (Math.random() - 0.5) * 2;
+      let rotation = 0;
+
+      petal.style.left = x + 'px';
+      petal.style.top = y + 'px';
+      petal.style.width = (18 + Math.random() * 12) + 'px';
+
+      container.appendChild(petal);
+
+      function animate() {
+        y += speedY;
+        x += speedX;
+        rotation += rotationSpeed;
+
+        petal.style.top = y + 'px';
+        petal.style.left = x + 'px';
+        petal.style.transform = `rotate(${rotation}deg)`;
+
+        if (y < window.innerHeight + 100 && x > -100) {
+          requestAnimationFrame(animate);
+        } else {
+          petal.remove();
+        }
+      }
+
+      animate();
+    }
+
+    // Интенсивный дождь лепестков
+    setInterval(() => {
+      if (container.childElementCount < 400) {
+        createPetal();
+      }
+    }, 150);
+
+    // Первые лепестки — сразу
+    for (let i = 0; i < 100; i++) {
+      setTimeout(createPetal, i * 300);
+    }
+  </script>
+  <div id="frame-border"></div>
+</body>
+</html>
