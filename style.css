@@ -42,7 +42,7 @@
 
     #naruto {
       position: fixed;
-      bottom: 120px;
+      bottom: 80px;
       left: 50%;
       transform: translateX(-50%);
       width: 350px;
@@ -61,4 +61,5 @@
       z-index: 9999; /* поверх всего */
       border: 8px solid #db87b1; /* рамка, толщина 8px */
       box-sizing: border-box; /* чтобы рамка не увеличивала размер */
+
     }
